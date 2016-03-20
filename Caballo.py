@@ -8,6 +8,7 @@ class Tablero:
 	tablero=[]
 	pisadas=[]
 	fin= False
+	maximo=0
 
 	def __init__(self):
 		for i in range(1,9):
@@ -20,6 +21,9 @@ class Tablero:
 
 	def moverA(self,posicion):
 		self.pisadas.append(posicion)
+		if len(self.pisadas)>self.maximo:
+			print "Nuevo maximo: "+str(len(self.pisadas))
+			self.maximo=len(self.pisadas)
 		if len(self.pisadas) == 64:
 			self.fin = True
 
@@ -42,6 +46,7 @@ class Caballo:
 	def __init__(self,x,y):	
 		self.posicionActual=(x,y)
 		self.listaDePasos.append(self.posicionActual)
+		self.tablero.moverA(self.posicionActual)
 		
 	def generarListaDePosiblesPasos(self,(x,y)):
 		## Esto es asqueroso, perdon D:
@@ -64,24 +69,28 @@ class Caballo:
 
 	def imprimirPasos(self):
 		print "Al FIIIIN, estos son los pasos: "
-		for pasos in listaDePasos:
+		for pasos in self.listaDePasos:
 			print pasos
 
-	def saltar(self):
+	def correrPrueba(self):
+		self.saltar(self.posicionActual)
+		print "No existe secuencia posible."
+
+	def saltar(self,movimiento):
 		if self.tablero.termino():
 			self.imprimirPasos()
 			exit(0)
 
-		posiblesPasos=self.generarListaDePosiblesPasos(self.posicionActual)
+		posiblesPasos=self.generarListaDePosiblesPasos(movimiento)
 
 		for paso in posiblesPasos:
 			self.tablero.moverA(paso)
-			print "Me muevo a "+ str(paso)
-			self.posicionActual=paso
-			self.saltar()
+			self.listaDePasos.append(paso)
+			self.saltar(paso)
 			self.tablero.desmarcar(paso)
-			print "Quito a "+ str(paso)
+			self.listaDePasos.remove(paso)
+
 
 
 caballito = Caballo(1,1)
-caballito.saltar()
+caballito.correrPrueba()
