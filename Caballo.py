@@ -63,6 +63,7 @@ class Caballo:
 		return listaFinal
 
 	def imprimirPasos(self):
+		print "Al FIIIIN, estos son los pasos: "
 		for pasos in listaDePasos:
 			print pasos
 
