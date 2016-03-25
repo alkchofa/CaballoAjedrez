@@ -40,14 +40,10 @@ class Tablero:
 		return self.fin
 
 class Caballo:
-	#listaDePasos=[]
-	tablero = Tablero(8,8)
-	combinaciones=0
+	tablero = Tablero(8,8) #Dimensiones del tablero
 
-	def __init__(self,x,y):	
+	def __init__(self,x,y):	#Posicion inicial del Caballo
 		self.posicionActual=(x,y)
-		#self.listaDePasos.append(self.posicionActual)
-		#self.tablero.moverA(self.posicionActual)
 		
 	def generarListaDePosiblesPasos(self,(x,y)):
 		## Esto es asqueroso, perdon D:
@@ -66,19 +62,15 @@ class Caballo:
 			if self.tablero.existe(posicion) and self.tablero.estaDisponible(posicion):
 				listaFinal.append(posicion)
 
-		listaFinal.reverse()
 		return listaFinal
-		#return listaFinal.reverse()
 
 	def guardarEnTxt(self):
-		archivo = open("movimientos.txt", "w")		 
+		archivo = open("movimientos.txt", "a")		 
 		archivo.writelines(str(self.tablero.pisadas))
 
 	def imprimirPasos(self):
 		print "Al FIIIIN, estos son los pasos: "
 		print self.tablero.pisadas
-		#for pasos in self.listaDePasos:
-		#	print pasos
 
 	def correrPrueba(self):
 		self.saltar(self.posicionActual)
@@ -86,8 +78,6 @@ class Caballo:
 
 	def saltar(self,movimiento):
 		self.tablero.moverA(movimiento)
-		self.combinaciones += 1 
-		print self.combinaciones
 
 		if self.tablero.termino():
 			self.imprimirPasos()
@@ -100,13 +90,7 @@ class Caballo:
 		for paso in posiblesPasos:
 			self.saltar(paso)
 			self.tablero.desmarcar(paso)
-			#self.tablero.moverA(paso)
-			#self.listaDePasos.append(paso)
-			#self.saltar(paso)
-			#self.tablero.desmarcar(paso)
-			#self.listaDePasos.remove(paso)
 
 
-
-caballito = Caballo(1,1)
+caballito = Caballo(5,5)
 caballito.correrPrueba()
